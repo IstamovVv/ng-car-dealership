@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from "@angular/common/http";
+import { HttpClient, HttpParams, HttpResponse } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { APIResponse } from "../models";
 
 import { environment as env } from "../../environments/environment";
 
@@ -28,18 +27,18 @@ export class HttpService {
     return this.http.get<T>(url, { params });
   }
 
-  post<T=null>( path: string, data: any): Observable<HttpResponse<T>> {
+  post<T>( path: string, data: T): Observable<HttpResponse<any>> {
     const url = getRelativeUrl(path);
 
-    return this.http.post<T>(url, data, {
+    return this.http.post<any>(url, data, {
       observe: 'response'
     });
   }
 
-  delete<T=null>(path: string, id: number): Observable<HttpResponse<T>> {
+  delete(path: string, id: number): Observable<HttpResponse<any>> {
     const url = getRelativeUrl(path, id.toString());
 
-    return this.http.delete<T>(url, {
+    return this.http.delete<any>(url, {
       observe: 'response',
       params: { id }
     });

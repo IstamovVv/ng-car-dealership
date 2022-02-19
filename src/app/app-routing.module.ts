@@ -1,15 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from "./auth/guards/auth.guard";
-import { LoginComponent } from "./auth/containers/login/login/login.component";
+import { AdminComponent } from "./admin/admin.component";
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/login' },
-  {
-    path: 'login',
-    component: LoginComponent,
-    canActivate: [AuthGuard],
-  },
+  { path: '', redirectTo: '/admin', pathMatch: 'full' },
+  { path: 'admin', component: AdminComponent, },
+  { path: 'admin/:modelName', component: AdminComponent },
 ];
 
 @NgModule({

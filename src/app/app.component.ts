@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from "./services/http.service";
-import { Client } from "./models";
-import { HttpResponse } from "@angular/common/http";
+import { Client } from "./models/clients/models/client";
 
 @Component({
   selector: 'app-root',
@@ -19,8 +18,5 @@ export class AppComponent implements OnInit {
       console.log(data)
     })
 
-    this.httpService.delete('clients', 8).subscribe((response: HttpResponse<any>) => {
-      console.log(response)
-    })
   }
 }

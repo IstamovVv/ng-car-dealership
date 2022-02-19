@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,12 +14,18 @@ import { MatButtonModule } from "@angular/material/button";
 import { AuthGuard } from "./auth/guards/auth.guard";
 import { AuthService } from "./auth/services/auth.service";
 import { TokenInterceptor } from "./interceptors/token.interceptor";
-import { LoginComponent } from './auth/containers/login/login/login.component';
+import { AdminComponent } from './admin/admin.component';
+import { MatListModule } from "@angular/material/list";
+import { ModelViewComponent } from './admin/model-view/model-view.component';
+
+import { ServiceLocator } from "./services/locator.service";
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
+    AdminComponent,
+    ModelViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,7 +35,8 @@ import { LoginComponent } from './auth/containers/login/login/login.component';
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatListModule,
   ],
   providers: [
     AuthGuard,
@@ -42,4 +49,8 @@ import { LoginComponent } from './auth/containers/login/login/login.component';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private injector: Injector) {
+    ServiceLocator.injector = this.injector;
+  }
+}
