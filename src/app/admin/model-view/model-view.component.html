@@ -1,11 +1,22 @@
-<mat-nav-list *ngIf="objects">
-  <table *ngIf="fields" mat-table [dataSource]="objects" class="mat-elevation-z8">
-    <ng-container *ngFor="let field of fields" matColumnDef="{{ field }}">
-      <th mat-header-cell *matHeaderCellDef> {{ field }} </th>
-      <td mat-cell *matCellDef="let element"> {{ element[field] }} </td>
-    </ng-container>
+<a class="go-back-btn" mat-raised-button routerLink="/admin">Back</a>
 
-    <tr mat-header-row *matHeaderRowDef="fields"></tr>
-    <tr mat-row *matRowDef="let row; columns: fields;"></tr>
-  </table>
-</mat-nav-list>
+<div class="example-container mat-elevation-z8">
+  <div class="example-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+
+  <div class="example-table-container">
+    <table *ngIf="objects" mat-table [dataSource]="objects" class="example-table">
+      <ng-container *ngFor="let field of fields" matColumnDef="{{ field }}">
+        <th mat-header-cell *matHeaderCellDef> {{ field }} </th>
+        <td mat-cell *matCellDef="let element"> {{ element[field] }} </td>
+      </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="fields"></tr>
+          <tr mat-row *matRowDef="let row; columns: fields;"></tr>
+    </table>
+
+    <mat-paginator [length]="resultsLength" [pageSize]="5"
+                   [pageSizeOptions]="[5, 10, 25, 50]" aria-label="Select Page"></mat-paginator>
+  </div>
+</div>
