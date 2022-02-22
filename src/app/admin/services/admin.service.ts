@@ -1,9 +1,18 @@
 import { Injectable } from '@angular/core';
+import { RegisteredService } from "./registered.service";
+import { getKeyValue } from "../../../lib/utils/common";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
+  constructor(private registeredService: RegisteredService) {}
 
-  constructor() { }
+  getRegistered(modelName: string) {
+    return getKeyValue(this.registeredService.registered)(modelName);
+  }
+
+  getRegisteredList() {
+    return this.registeredService.registered;
+  }
 }

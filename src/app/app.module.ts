@@ -19,13 +19,18 @@ import { MatListModule } from "@angular/material/list";
 import { ModelViewComponent } from './admin/model-view/model-view.component';
 
 import { ServiceLocator } from "./services/locator.service";
-
+import { ModelsListComponent } from './admin/models-list/models-list.component';
+import { KeysPipe } from "./keys.pipe";
+import { MatCardModule } from "@angular/material/card";
+import { MatTableModule } from "@angular/material/table";
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminComponent,
     ModelViewComponent,
+    ModelsListComponent,
+    KeysPipe
   ],
   imports: [
     BrowserModule,
@@ -37,6 +42,8 @@ import { ServiceLocator } from "./services/locator.service";
     MatInputModule,
     MatButtonModule,
     MatListModule,
+    MatCardModule,
+    MatTableModule
   ],
   providers: [
     AuthGuard,

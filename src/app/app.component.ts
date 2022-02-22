@@ -14,9 +14,5 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.httpService.get<Client[]>('clients', 0, 10).subscribe((data: Client[]) => {
-      console.log(data)
-    })
-
   }
 }

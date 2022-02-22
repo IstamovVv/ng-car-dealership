@@ -1,0 +1,5 @@
+<mat-nav-list>
+  <a mat-list-item *ngFor="let key of registered | keys" [routerLink]="['/admin', registered[key].path]">
+    {{ registered[key].name }}
+  </a>
+</mat-nav-list>
