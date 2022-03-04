@@ -15,4 +15,6 @@ export class AdminService {
   getRegisteredList() {
     return this.registeredService.registered;
   }
+
+
 }

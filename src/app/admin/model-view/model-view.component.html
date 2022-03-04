@@ -16,8 +16,8 @@
 
         <ng-template #buttonsTemplate>
           <td mat-cell *matCellDef="let element">
-            <button type="button" class="update-button" mat-raised-button (click)="handleModalShow()">Update</button>
-            <button type="button" class="delete-button" mat-raised-button (click)="handleModalShow()">Delete</button>
+            <button type="button" class="update-button" mat-raised-button >Update</button>
+            <button type="button" class="delete-button" mat-raised-button (click)="handleDelete(element)">Delete</button>
           </td>
         </ng-template>
       </ng-container>

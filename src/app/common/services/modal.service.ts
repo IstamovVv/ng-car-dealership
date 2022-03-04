@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgElement, WithProperties } from "@angular/elements";
 import { ModalComponent } from "../modal/modal.component";
-import { Subject } from "rxjs";
-
-export enum ModalResponse {
-  Accepted,
-  Rejected
-}
 
 @Injectable({
   providedIn: 'root'
@@ -14,23 +8,20 @@ export enum ModalResponse {
 export class ModalService {
   constructor() {}
 
-  showAsElement(message: string) {
+  show(message: string, onAccept?: Function, onReject?: Function) {
     const popupEl: NgElement & WithProperties<ModalComponent> = document.createElement('modal-window') as any;
-    const modalSubject = new Subject<ModalResponse>();
 
     popupEl.addEventListener('accepted', () => {
-      modalSubject.next(ModalResponse.Accepted);
+      onAccept?.();
       document.body.removeChild(popupEl);
     });
 
     popupEl.addEventListener('rejected', () => {
-      modalSubject.next(ModalResponse.Rejected);
+      onReject?.();
       document.body.removeChild(popupEl);
     });
 
     popupEl.message = message;
     document.body.appendChild(popupEl);
-
-    return modalSubject;
   }
 }

@@ -18,7 +18,6 @@ export class ModelsListComponent implements OnInit {
     this.registered = adminService.getRegisteredList();
   }
 
-
   ngOnInit(): void {
 
   }

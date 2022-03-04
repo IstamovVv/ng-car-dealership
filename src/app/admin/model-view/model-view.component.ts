@@ -6,6 +6,8 @@ import { MatPaginator } from "@angular/material/paginator";
 import { ModalService } from "../../common/services/modal.service";
 import { ModalComponent } from "../../common/modal/modal.component";
 import { createCustomElement } from "@angular/elements";
+import { Registered } from "../services/registered.service";
+import { HttpResponse } from "@angular/common/http";
 
 @Component({
   selector: 'app-model-view',
@@ -14,6 +16,7 @@ import { createCustomElement } from "@angular/elements";
 })
 export class ModelViewComponent implements OnInit, OnDestroy {
   modelName!: string;
+  registered!: Registered<any>;
 
   objects?: any[];
   fields?: string[];
@@ -34,27 +37,36 @@ export class ModelViewComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
     this.routerSubscription = this.route.params.subscribe(params => {
-      const registered = this.adminService.getRegistered(params['modelName']);
+      this.registered = this.adminService.getRegistered(params['modelName']);
 
-      if (!registered) this.router.navigate(['/admin']);
+      if (!this.registered) this.router.navigate(['/admin']);
 
-      this.fields = registered.fields.slice();
+      this.fields = this.registered.fields.slice();
       this.fields.push('actions');
 
-      registered.service.get(0, 10).subscribe((objects: any[]) => {
-        setTimeout(() => {
-          this.objects = objects;
-          this.isLoadingResults = false;
-        }, 500);
-      })
+      this.loadObjects();
     })
   }
 
-  handleModalShow() {
-    const subject = this.modal.showAsElement('Вы уверены, что хотите удалить данный элемент?');
-    subject.subscribe((response) => {
-      console.log(response)
-    })
+  loadObjects() {
+    this.registered.service.get(0, 10, {
+      onSuccess: (objects: any[]) => {
+        this.objects = objects;
+        this.isLoadingResults = false;
+      }
+    });
+  }
+
+  handleDelete(element: any) {
+    this.modal.show('Are you sure you want to delete this object?', () => {
+      // this.registered.service.delete(element.id).subscribe((response: HttpResponse<null>) => {
+      //   if (response.ok) {
+      //     this.loadObjects();
+      //   } else {
+      //
+      //   }
+      // })
+    });
   }
 
   ngOnInit(): void {
