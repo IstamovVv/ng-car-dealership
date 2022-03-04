@@ -1,4 +1,4 @@
-import { Injector, NgModule } from '@angular/core';
+import { ApplicationRef, DoBootstrap, Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -26,6 +26,9 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatSortModule } from "@angular/material/sort";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { AddModelComponent } from './admin/add-model/add-model.component';
+import { ModalComponent } from './common/modal/modal.component';
+import { createCustomElement } from "@angular/elements";
 
 @NgModule({
   declarations: [
@@ -33,7 +36,9 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     AdminComponent,
     ModelViewComponent,
     ModelsListComponent,
-    KeysPipe
+    KeysPipe,
+    AddModelComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -60,10 +65,16 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
       multi: true,
     }
   ],
-  bootstrap: [AppComponent]
 })
-export class AppModule {
+export class AppModule implements DoBootstrap {
   constructor(private injector: Injector) {
     ServiceLocator.injector = this.injector;
+  }
+
+  ngDoBootstrap(appRef: ApplicationRef) {
+    appRef.bootstrap(AppComponent);
+
+    const ModalElement = createCustomElement(ModalComponent, { injector: this.injector });
+    customElements.define('modal-window', ModalElement);
   }
 }

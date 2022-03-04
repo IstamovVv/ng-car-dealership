@@ -1,0 +1,28 @@
+@import "src/lib/styles/containers";
+
+:host {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 15rem;
+  width: 25rem;
+
+  @include default-container;
+}
+
+.modal-content {
+  height: 90%;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reject-button {
+  margin-left: 1rem;
+}

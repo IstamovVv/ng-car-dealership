@@ -1,11 +1,15 @@
 @import "common";
 
-.default-container {
+@mixin default-container {
   background-color: white;
   padding: 3rem;
   border-radius: 1rem;
 
   @include box-shadow(0px 5px 10px 2px rgba(34, 60, 80, 0.2))
+}
+
+.default-container {
+  @include default-container;
 }
 
 .default-wrapper {

@@ -1,16 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AdminService } from "../services/admin.service";
-import { catchError, map, merge, Observable, observable, of, startWith, Subscription, switchMap } from "rxjs";
+import { Subscription } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
+import { ModalService } from "../../common/services/modal.service";
+import { ModalComponent } from "../../common/modal/modal.component";
+import { createCustomElement } from "@angular/elements";
 
 @Component({
   selector: 'app-model-view',
   templateUrl: './model-view.component.html',
   styleUrls: ['./model-view.component.scss']
 })
-export class ModelViewComponent implements OnInit {
+export class ModelViewComponent implements OnInit, OnDestroy {
   modelName!: string;
 
   objects?: any[];
@@ -23,46 +25,46 @@ export class ModelViewComponent implements OnInit {
 
   private routerSubscription!: Subscription;
 
-  constructor(private adminService: AdminService,
+  constructor(public modal: ModalService,
+              private adminService: AdminService,
               private route: ActivatedRoute,
-              private router: Router) {}
+              private router: Router) {
+
+  }
 
   ngAfterViewInit() {
-
     this.routerSubscription = this.route.params.subscribe(params => {
-      this.paginator.page
-        .pipe(
-          startWith({}),
-          switchMap(() => {
-            this.isLoadingResults = true;
-            const registered = this.adminService.getRegistered(params['modelName']);
+      const registered = this.adminService.getRegistered(params['modelName']);
 
-            if (!registered) this.router.navigate(['/admin']);
+      if (!registered) this.router.navigate(['/admin']);
 
-            this.fields = registered.fields;
+      this.fields = registered.fields.slice();
+      this.fields.push('actions');
 
-            return registered.service.get(this.paginator.pageIndex, this.paginator.length)
-              .pipe(catchError(() => of(null)))
-          }),
-          map((objects: any[] | null) => {
-            this.isLoadingResults = false;
-
-            if (objects === null) return [];
-
-            this.resultsLength = objects.length;
-            return objects;
-          })
-        )
-        .subscribe((objects: any[]) => {
+      registered.service.get(0, 10).subscribe((objects: any[]) => {
+        setTimeout(() => {
           this.objects = objects;
-        });
+          this.isLoadingResults = false;
+        }, 500);
+      })
     })
+  }
 
+  handleModalShow() {
+    const subject = this.modal.showAsElement('Вы уверены, что хотите удалить данный элемент?');
+    subject.subscribe((response) => {
+      console.log(response)
+    })
+  }
 
+  goBack() {
+    this.router.navigate(['/admin']);
   }
 
   ngOnInit(): void {
   }
 
-
+  ngOnDestroy(): void {
+    this.routerSubscription.unsubscribe();
+  }
 }

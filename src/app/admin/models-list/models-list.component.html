@@ -1,7 +1,7 @@
 <mat-nav-list>
   <mat-list-item *ngFor="let key of registered | keys">
-    <button class="add-button" mat-raised-button color="primary">Add</button>
-    <a class="show-button" mat-raised-button [routerLink]="['/admin', registered[key].path]">Show</a>
+    <a class="add-button" mat-raised-button [routerLink]="['/admin', 'add', key]">Add</a>
+    <a class="show-button" mat-raised-button (click)="goToModelView([registered[key].path])">Show</a>
 
     <mat-icon matListIcon>folder</mat-icon>
     <h3 matLine> {{ registered[key].name }} </h3>

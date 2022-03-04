@@ -1,0 +1,14 @@
+
+
+<div class="modal-content">
+  <span>{{ message }}</span>
+</div>
+<div class="modal-buttons">
+  <button class="accept-button"
+          mat-stroked-button color="primary"
+          (click)="this.accepted.emit()">Accept</button>
+
+  <button class="reject-button"
+          mat-stroked-button color="primary"
+          (click)="this.rejected.emit()">Reject</button>
+</div>
