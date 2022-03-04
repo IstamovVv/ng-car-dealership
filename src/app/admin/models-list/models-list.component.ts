@@ -22,8 +22,4 @@ export class ModelsListComponent implements OnInit {
   ngOnInit(): void {
 
   }
-
-  goToModelView(commands: string[]) {
-    this.router.navigate(commands, { relativeTo: this.route });
-  }
 }

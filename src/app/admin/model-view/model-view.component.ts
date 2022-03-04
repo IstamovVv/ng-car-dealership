@@ -57,10 +57,6 @@ export class ModelViewComponent implements OnInit, OnDestroy {
     })
   }
 
-  goBack() {
-    this.router.navigate(['/admin']);
-  }
-
   ngOnInit(): void {
   }
 
