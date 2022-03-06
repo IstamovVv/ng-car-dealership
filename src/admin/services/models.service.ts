@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from "./http.service";
-import { catchError, Observable, throwError } from "rxjs";
+import { HttpService } from "./utils/http.service";
+import { Observable } from "rxjs";
 import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 
 export interface IModelsActionObserver {

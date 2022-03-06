@@ -1,0 +1,25 @@
+:host {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.go-back-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.forms-container {
+  width: 500px;
+}
+
+.field-input {
+  width: 100%;
+}
+
+.submit-button {
+  width: 100%;
+}

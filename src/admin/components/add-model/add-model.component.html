@@ -1,0 +1,15 @@
+<a class="go-back-btn" mat-raised-button routerLink="/admin">Back</a>
+
+<div class="forms-container">
+  <form [formGroup]="modelForm">
+    <p *ngFor="let field of fields">
+      <mat-form-field class="field-input" appearance="legacy">
+        <mat-label>{{ field }}</mat-label>
+        <input matInput [formControlName]="field" required>
+      </mat-form-field>
+    </p>
+
+    <button class="submit-button" mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+  </form>
+</div>
+

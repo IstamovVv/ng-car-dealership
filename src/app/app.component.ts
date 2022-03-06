@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from "./services/http.service";
-import { Client } from "./models/clients/models/client";
 
 @Component({
   selector: 'app-root',
@@ -10,7 +8,7 @@ import { Client } from "./models/clients/models/client";
 export class AppComponent implements OnInit {
   title = 'my-angular-project';
 
-  constructor(private httpService: HttpService) {
+  constructor() {
   }
 
   ngOnInit() {

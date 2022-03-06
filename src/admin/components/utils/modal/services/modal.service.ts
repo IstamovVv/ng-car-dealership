@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { NgElement, WithProperties } from "@angular/elements";
-import { ModalComponent } from "../modal/modal.component";
+import { ModalComponent } from "../modal.component";
 
 @Injectable({
   providedIn: 'root'

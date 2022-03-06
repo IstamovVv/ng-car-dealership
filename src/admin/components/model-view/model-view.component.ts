@@ -1,13 +1,11 @@
-import { Component, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AdminService } from "../services/admin.service";
-import { Subscription } from "rxjs";
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MatPaginator } from "@angular/material/paginator";
-import { ModalService } from "../../common/services/modal.service";
-import { ModalComponent } from "../../common/modal/modal.component";
-import { createCustomElement } from "@angular/elements";
-import { Registered } from "../services/registered.service";
-import { HttpResponse } from "@angular/common/http";
+import { Subscription } from "rxjs";
+import { AdminService } from "../../services/admin.service";
+import { ModalService } from "../utils/modal/services/modal.service";
+import { Registered } from "../../services/registered.service";
+
 
 @Component({
   selector: 'app-model-view',
@@ -18,8 +16,8 @@ export class ModelViewComponent implements OnInit, OnDestroy {
   modelName!: string;
   registered!: Registered<any>;
 
-  objects?: any[];
-  fields?: string[];
+  objects!: any[];
+  fields!: string[];
 
   resultsLength = 0;
   isLoadingResults = true;
@@ -32,7 +30,6 @@ export class ModelViewComponent implements OnInit, OnDestroy {
               private adminService: AdminService,
               private route: ActivatedRoute,
               private router: Router) {
-
   }
 
   ngAfterViewInit() {
@@ -43,6 +40,7 @@ export class ModelViewComponent implements OnInit, OnDestroy {
 
       this.fields = this.registered.fields.slice();
       this.fields.push('actions');
+      this.fields.unshift(...this.registered.calculatedFields);
 
       this.loadObjects();
     })
@@ -54,18 +52,17 @@ export class ModelViewComponent implements OnInit, OnDestroy {
         this.objects = objects;
         this.isLoadingResults = false;
       }
-    });
+    })
   }
 
   handleDelete(element: any) {
     this.modal.show('Are you sure you want to delete this object?', () => {
-      // this.registered.service.delete(element.id).subscribe((response: HttpResponse<null>) => {
-      //   if (response.ok) {
-      //     this.loadObjects();
-      //   } else {
-      //
-      //   }
-      // })
+      this.registered.service.delete(element.id, {
+        onSuccess: (response: any) => {
+          this.isLoadingResults = true;
+          this.loadObjects();
+        }
+      })
     });
   }
 

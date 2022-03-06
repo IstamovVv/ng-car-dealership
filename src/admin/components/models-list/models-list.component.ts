@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { AdminService } from "../services/admin.service";
-import { Registered } from "../services/registered.service";
+import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { AdminService } from "../../services/admin.service";
+import { Registered } from "../../services/registered.service";
 
 @Component({
   selector: 'app-models-list',

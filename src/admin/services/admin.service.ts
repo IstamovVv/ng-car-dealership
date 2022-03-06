@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RegisteredService } from "./registered.service";
-import { getKeyValue } from "../../../lib/utils/common";
+import { getKeyValue } from "../lib/scripts/common";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,4 @@ export class AdminService {
   getRegisteredList() {
     return this.registeredService.registered;
   }
-
-
 }
