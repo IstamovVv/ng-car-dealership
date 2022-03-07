@@ -1,4 +1,5 @@
 export interface Tokens {
-  jwt: string;
-  refreshToken: string;
+  accessToken: string,
+  refreshToken: string,
+  tokenType: string,
 }

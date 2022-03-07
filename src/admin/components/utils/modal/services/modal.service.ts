@@ -1,27 +1,35 @@
-import { Injectable } from "@angular/core";
-import { NgElement, WithProperties } from "@angular/elements";
+import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector } from "@angular/core";
 import { ModalComponent } from "../modal.component";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModalService {
-  constructor() {}
+  constructor(private injector: Injector,
+              private applicationRef: ApplicationRef,
+              private componentFactoryResolver: ComponentFactoryResolver) {}
 
   show(message: string, onAccept?: Function, onReject?: Function) {
-    const popupEl: NgElement & WithProperties<ModalComponent> = document.createElement('modal-window') as any;
+    const modal = document.createElement('modal-window');
 
-    popupEl.addEventListener('accepted', () => {
+    const factory = this.componentFactoryResolver.resolveComponentFactory(ModalComponent);
+    const modalComponentRef = factory.create(this.injector, [], modal);
+
+    this.applicationRef.attachView(modalComponentRef.hostView);
+
+    modalComponentRef.instance.accepted.subscribe(() => {
       onAccept?.();
-      document.body.removeChild(popupEl);
+      document.body.removeChild(modal);
+      this.applicationRef.detachView(modalComponentRef.hostView);
     });
 
-    popupEl.addEventListener('rejected', () => {
+    modalComponentRef.instance.rejected.subscribe(() => {
       onReject?.();
-      document.body.removeChild(popupEl);
+      document.body.removeChild(modal);
+      this.applicationRef.detachView(modalComponentRef.hostView);
     });
 
-    popupEl.message = message;
-    document.body.appendChild(popupEl);
+    modalComponentRef.instance.message = message;
+    document.body.appendChild(modal);
   }
 }

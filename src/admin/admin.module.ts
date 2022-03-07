@@ -1,6 +1,6 @@
 import { ApplicationRef, DoBootstrap, Injector, NgModule } from '@angular/core';
 import { createCustomElement } from "@angular/elements";
-import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { ReactiveFormsModule } from "@angular/forms";
 import { AngularMaterialSharedModule } from "./modules/angular-material-shared/angular-material-shared.module";
 import { ServiceLocator } from "./services/utils/locator.service";
@@ -12,6 +12,7 @@ import { KeysPipe } from "../app/keys.pipe";
 import { AdminRoutingModule } from "./admin-routing.module";
 import { CommonModule } from "@angular/common";
 import { AdminComponent } from './admin.component';
+import { TokenInterceptor } from "../app/interceptors/token.interceptor";
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { AdminComponent } from './admin.component';
     ModelsListComponent,
     AddModelComponent,
     AdminComponent,
+    ModalComponent
   ],
   imports: [
     CommonModule,
@@ -28,16 +30,16 @@ import { AdminComponent } from './admin.component';
     ReactiveFormsModule,
     AngularMaterialSharedModule,
   ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    }
+  ]
 })
-export class AdminModule implements DoBootstrap {
+export class AdminModule {
   constructor(private injector: Injector) {
     ServiceLocator.injector = this.injector;
-  }
-
-  ngDoBootstrap(appRef: ApplicationRef) {
-    appRef.bootstrap(AdminComponent);
-
-    const ModalElement = createCustomElement(ModalComponent, { injector: this.injector });
-    customElements.define('modal-window', ModalElement);
   }
 }

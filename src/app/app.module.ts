@@ -11,16 +11,26 @@ import { AuthGuard } from "./auth/guards/auth.guard";
 import { TokenInterceptor } from "./interceptors/token.interceptor";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AdminModule } from "../admin/admin.module";
+import { LoginComponent } from './auth/components/login/login.component';
+import { AngularMaterialSharedModule } from "./modules/angular-material-shared/angular-material-shared.module";
+import { ReactiveFormsModule } from "@angular/forms";
+import { RegistrationComponent } from './auth/components/registration/registration.component';
+import { MainComponent } from './main/main.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
+    RegistrationComponent,
+    MainComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    AdminModule
+    AdminModule,
+    AngularMaterialSharedModule,
+    ReactiveFormsModule,
   ],
   bootstrap: [
     AppComponent

@@ -23,9 +23,9 @@ export class AddModelComponent {
 
   private routerSubscription!: Subscription;
 
-  constructor(private route: ActivatedRoute,
+  constructor(public modal: ModalService,
+              private route: ActivatedRoute,
               private router: Router,
-              public modal: ModalService,
               private adminService: AdminService,
               private addModelService: AddModelService) { }
 

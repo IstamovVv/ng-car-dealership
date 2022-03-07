@@ -7,6 +7,7 @@ import {
 } from '@angular/common/http';
 import { BehaviorSubject, catchError, filter, Observable, switchMap, take, throwError } from 'rxjs';
 import { AuthService } from "../auth/services/auth.service";
+import { Tokens } from "../auth/models/tokens";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -17,10 +18,10 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(public authService: AuthService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const jwt = this.authService.getJwtToken();
+    const accessToken = this.authService.getAccessToken();
 
-    if (jwt) {
-      request = this.addToken(request, jwt);
+    if (accessToken) {
+      request = this.addToken(request, accessToken);
     }
 
     return next.handle(request).pipe(catchError(error => {
@@ -46,19 +47,19 @@ export class TokenInterceptor implements HttpInterceptor {
       this.refreshTokenSubject.next(null);
 
       return this.authService.refreshToken().pipe(
-        switchMap((token: any) => {
+        switchMap((token: Tokens) => {
           this.isRefreshing = false;
-          this.refreshTokenSubject.next(token.jwt);
+          this.refreshTokenSubject.next(token.accessToken);
 
-          return next.handle(this.addToken(request, token.jwt));
+          return next.handle(this.addToken(request, token.accessToken));
         })
       )
     } else {
       return this.refreshTokenSubject.pipe(
         filter(token => token != null),
         take(1),
-        switchMap(jwt => {
-          return next.handle(this.addToken(request, jwt));
+        switchMap(accessToken => {
+          return next.handle(this.addToken(request, accessToken));
         })
       )
     }

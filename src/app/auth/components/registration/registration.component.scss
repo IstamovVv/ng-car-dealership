@@ -1,0 +1,19 @@
+@import "src/lib/styles/default-page";
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-container {
+  height: 300px;
+  width: 600px;
+}
+
+.auth-input {
+  width: 100%;
+}
+
+.submit-button {
+  width: 100%;
+}

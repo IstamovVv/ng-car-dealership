@@ -1,75 +1,73 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { catchError, mapTo, Observable, of, tap } from "rxjs";
+import { BehaviorSubject, catchError, mapTo, Observable, of, tap } from "rxjs";
 import { environment as env } from "../../../environments/environment";
 import { Tokens } from "../models/tokens";
+import { AuthResponse } from "../models/authResponse";
+import { nullUser, User } from "../models/user";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private readonly JWT_TOKEN = 'JWT_TOKEN';
+  private readonly ACCESS_TOKEN = 'ACCESS_TOKEN';
   private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
-  private loggedUser!: string | null;
 
-  constructor(private http: HttpClient) { }
+  private currentUserSubject: BehaviorSubject<User>;
+  private currentUser: Observable<User>;
+
+  constructor(private http: HttpClient) {
+    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!) || nullUser);
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
+
+  public get currentUserValue(): User {
+    return this.currentUserSubject.value;
+  }
 
   login(user: { username: string, password: string }): Observable<any> {
-    return this.http.post<any>(`${env.BASE_URL}/login`, user)
-      .pipe(
-        tap(tokens => this.doLoginUser(user.username, tokens)),
-        mapTo(true),
-        catchError(error => {
-          alert(error.error);
-          return of(false);
-        })
-      )
+    return this.http.post<any>(`${env.BASE_AUTH_URL}/login`, user).pipe(
+      tap((response: AuthResponse) => this.doLoginUser(response.user, response.token))
+    );
   }
 
   logout() {
-    return this.http.post<any>(`${env.BASE_URL}/logout`, {
+    return this.http.post<any>(`${env.BASE_AUTH_URL}/logout`, {
       'refreshToken': this.getRefreshToken()
-    }).pipe(
-      tap(() => this.doLogoutUser()),
-      mapTo(true),
-      catchError(error => {
-        alert(error.error);
-        return of(false);
-      })
-    )
-  }
-
-  isLoggedIn() {
-    return !!this.getJwtToken();
+    }).pipe(tap(() => this.doLogoutUser()))
   }
 
   refreshToken() {
     return this.http.post<any>(`${env.BASE_URL}/refresh`, {
       'refreshToken': this.getRefreshToken()
-    }).pipe(tap((tokens: Tokens) => this.storeJwtToken(tokens.jwt)))
+    }).pipe(tap((tokens: Tokens) => this.storeAccessToken(tokens.accessToken)))
   }
 
-  getJwtToken() {
-    return localStorage.getItem(this.JWT_TOKEN);
+  getAccessToken() {
+    return localStorage.getItem(this.ACCESS_TOKEN);
   }
 
   getRefreshToken() {
     return localStorage.getItem(this.REFRESH_TOKEN);
   }
 
-  private doLoginUser(username: string, tokens: Tokens) {
-    this.loggedUser = username;
+  private doLoginUser(user: User, tokens: Tokens) {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+
+    this.currentUserSubject.next(user);
     this.storeTokens(tokens);
   }
 
   private doLogoutUser() {
-    this.loggedUser = null;
+    localStorage.removeItem('currentUser');
+
+    this.currentUserSubject.next(nullUser);
     this.removeTokens();
   }
 
-  private storeJwtToken(jwt: string) {
-    localStorage.setItem(this.JWT_TOKEN, jwt);
+  private storeAccessToken(jwt: string) {
+    localStorage.setItem(this.ACCESS_TOKEN, jwt);
   }
 
   private storeRefreshToken(refresh: string) {
@@ -77,12 +75,12 @@ export class AuthService {
   }
 
   private storeTokens(tokens: Tokens) {
-    localStorage.setItem(this.JWT_TOKEN, tokens.jwt);
+    localStorage.setItem(this.ACCESS_TOKEN, tokens.accessToken);
     localStorage.setItem(this.REFRESH_TOKEN, tokens.refreshToken);
   }
 
   private removeTokens() {
-    localStorage.removeItem(this.JWT_TOKEN);
+    localStorage.removeItem(this.ACCESS_TOKEN);
     localStorage.removeItem(this.REFRESH_TOKEN);
   }
 }
