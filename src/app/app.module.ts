@@ -16,6 +16,9 @@ import { AngularMaterialSharedModule } from "./modules/angular-material-shared/a
 import { ReactiveFormsModule } from "@angular/forms";
 import { RegistrationComponent } from './auth/components/registration/registration.component';
 import { MainComponent } from './main/main.component';
+import { ProfileComponent } from './profile/profile.component';
+import { CustomMaterialModule } from "../custom-material/custom-material.module";
+import { PaymentPageComponent } from './payment-page/payment-page.component';
 
 @NgModule({
   declarations: [
@@ -23,14 +26,17 @@ import { MainComponent } from './main/main.component';
     LoginComponent,
     RegistrationComponent,
     MainComponent,
+    ProfileComponent,
+    PaymentPageComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     AdminModule,
     AngularMaterialSharedModule,
-    ReactiveFormsModule,
+    CustomMaterialModule,
   ],
   bootstrap: [
     AppComponent

@@ -1,6 +1,6 @@
-@import "src/lib/styles/default-page";
+@import "src/custom-material/custom-page/custom-page.component";
 
-.example-spacer {
+.spacer {
   flex: 1 1 auto;
 }
 
@@ -8,7 +8,7 @@
   padding: 0;
 }
 
-.example-container {
+mat-sidenav-container {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -16,9 +16,6 @@
   right: 0;
 }
 
-.example-events {
-  width: 300px;
-  height: 200px;
-  overflow: auto;
-  border: 1px solid #555;
+.main-toolbar {
+  @include box-shadow(0px 5px 10px 2px rgb(34 60 80 / 20%));
 }

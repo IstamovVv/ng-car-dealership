@@ -1,0 +1,12 @@
+<div class="wrapper default-wrapper">
+  <div class="header default-container">
+    <a class="back-button" mat-stroked-button [routerLink]="backRef">Back</a>
+    <h1 class="header-text">
+      <ng-content select="[header-text]"></ng-content>
+    </h1>
+  </div>
+
+  <div class="container default-container">
+    <ng-content></ng-content>
+  </div>
+</div>

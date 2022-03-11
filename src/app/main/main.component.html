@@ -1,22 +1,26 @@
-<mat-sidenav-container class="example-container">
+<mat-sidenav-container>
   <mat-sidenav #sidenav>
     <p><button mat-button (click)="sidenav.toggle()">Toggle</button></p>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <div class="wrapper default-wrapper">
-      <mat-toolbar color="primary">
+      <mat-toolbar class="main-toolbar">
         <mat-toolbar-row>
-          <button mat-icon-button class="example-icon" (click)="sidenav.toggle()">
+          <button mat-icon-button (click)="sidenav.toggle()">
             <mat-icon>menu</mat-icon>
           </button>
           <span>Car Dealership</span>
-          <span class="example-spacer"></span>
+          <span class="spacer"></span>
 
           <a mat-button routerLink="/admin">Admin</a>
+          <a mat-button routerLink="/profile">Profile</a>
+          <a mat-button routerLink="/payment">Payment</a>
           <a mat-button>Logout</a>
         </mat-toolbar-row>
       </mat-toolbar>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+

@@ -1,7 +1,11 @@
-@import "src/lib/styles/containers";
+@import "../styles/containers";
 
 .wrapper {
   padding-top: 5rem;
+}
+
+.back-button {
+  position: absolute;
 }
 
 .header {

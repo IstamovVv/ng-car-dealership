@@ -5,6 +5,8 @@ import { AuthGuard } from "./auth/guards/auth.guard";
 import { MainComponent } from "./main/main.component";
 import { PermissionsGuard } from "./auth/guards/permissions.guard";
 import { Roles } from "./auth/models/roles";
+import { ProfileComponent } from "./profile/profile.component";
+import { PaymentPageComponent } from "./payment-page/payment-page.component";
 
 const routes: Routes = [
   {
@@ -14,6 +16,16 @@ const routes: Routes = [
     data: {
       roles: [Roles.User, Roles.Admin]
     }
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'payment',
+    component: PaymentPageComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'login', component: LoginComponent,

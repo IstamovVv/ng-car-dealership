@@ -13,6 +13,7 @@ import { AdminRoutingModule } from "./admin-routing.module";
 import { CommonModule } from "@angular/common";
 import { AdminComponent } from './admin.component';
 import { TokenInterceptor } from "../app/interceptors/token.interceptor";
+import { CustomMaterialModule } from "../custom-material/custom-material.module";
 
 @NgModule({
   declarations: [
@@ -21,13 +22,14 @@ import { TokenInterceptor } from "../app/interceptors/token.interceptor";
     ModelsListComponent,
     AddModelComponent,
     AdminComponent,
-    ModalComponent
+    ModalComponent,
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    CustomMaterialModule,
     AngularMaterialSharedModule,
   ],
   providers: [

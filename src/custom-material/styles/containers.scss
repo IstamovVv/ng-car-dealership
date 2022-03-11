@@ -1,4 +1,4 @@
-@import "common";
+@import "src/custom-material/styles/common";
 
 @mixin default-container {
   background-color: white;
@@ -13,7 +13,7 @@
 }
 
 .default-wrapper {
-  background-image: url("../../assets/images/background.jpg");
+  background-image: url("../assets/images/background.jpg");
   height: 100%;
   width: 100%;
 }

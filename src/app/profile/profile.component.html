@@ -1,0 +1,30 @@
+<app-custom-page>
+  <ng-container header-text>
+    Your Profile
+  </ng-container>
+
+  <div class="content">
+    <div class="image-container">
+      <img class="profile-image" src="assets/images/profile-image-placeholder.png" alt="profile-image">
+    </div>
+    <div class="data-container">
+      <mat-list>
+        <mat-list-item>
+          <div class="field-name">Id:</div>
+          <div class="field-value">{{ id }}</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+          <div class="field-name">Role:</div>
+          <div class="field-value">{{ role }}</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+          <div class="field-name">Username:</div>
+          <div class="field-value">{{ username }}</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </div>
+  </div>
+</app-custom-page>
