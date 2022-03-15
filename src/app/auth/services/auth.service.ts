@@ -4,7 +4,7 @@ import { BehaviorSubject, catchError, mapTo, Observable, of, tap } from "rxjs";
 import { environment as env } from "../../../environments/environment";
 import { Tokens } from "../models/tokens";
 import { AuthResponse } from "../models/authResponse";
-import { nullUser, User } from "../models/user";
+import {nullUser, User, UserLoginData, UserRegisterData} from "../models/user";
 
 @Injectable({
   providedIn: 'root'
@@ -26,22 +26,31 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(user: { username: string, password: string }): Observable<any> {
+  login(user: UserLoginData): Observable<any> {
     return this.http.post<any>(`${env.BASE_AUTH_URL}/login`, user).pipe(
       tap((response: AuthResponse) => this.doLoginUser(response.user, response.token))
     );
   }
 
   logout() {
-    return this.http.post<any>(`${env.BASE_AUTH_URL}/logout`, {
-      'refreshToken': this.getRefreshToken()
-    }).pipe(tap(() => this.doLogoutUser()))
+    return this.http.post<any>(`${env.BASE_AUTH_URL}/logout`, null, {
+      params: {
+        'token': this.getRefreshToken() || '',
+      }
+    }).pipe(tap(() => this.doLogoutUser()));
+  }
+
+  register(data: UserRegisterData) {
+    return this.http.post<any>(`${env.BASE_AUTH_URL}/signup`, data).pipe(
+      tap((response: AuthResponse) => {
+      this.doLoginUser(response.user, response.token)
+    }));
   }
 
   refreshToken() {
-    return this.http.post<any>(`${env.BASE_URL}/refresh`, {
-      'refreshToken': this.getRefreshToken()
-    }).pipe(tap((tokens: Tokens) => this.storeAccessToken(tokens.accessToken)))
+    return this.http.post<any>(`${env.BASE_AUTH_URL}/token`, {
+      'token': this.getRefreshToken()
+    }).pipe(tap((tokens: Tokens) => this.storeAccessToken(tokens.accessToken)));
   }
 
   getAccessToken() {
@@ -64,6 +73,8 @@ export class AuthService {
 
     this.currentUserSubject.next(nullUser);
     this.removeTokens();
+
+    window.location.reload();
   }
 
   private storeAccessToken(jwt: string) {

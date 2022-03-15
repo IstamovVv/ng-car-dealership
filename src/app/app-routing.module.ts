@@ -7,6 +7,7 @@ import { PermissionsGuard } from "./auth/guards/permissions.guard";
 import { Roles } from "./auth/models/roles";
 import { ProfileComponent } from "./profile/profile.component";
 import { PaymentPageComponent } from "./payment-page/payment-page.component";
+import { RegistrationComponent } from "./auth/components/registration/registration.component";
 
 const routes: Routes = [
   {
@@ -18,6 +19,12 @@ const routes: Routes = [
     }
   },
   {
+    path: 'login', component: LoginComponent,
+  },
+  {
+    path: 'registration', component: RegistrationComponent
+  },
+  {
     path: 'profile',
     component: ProfileComponent,
     canActivate: [AuthGuard],
@@ -26,9 +33,6 @@ const routes: Routes = [
     path: 'payment',
     component: PaymentPageComponent,
     canActivate: [AuthGuard],
-  },
-  {
-    path: 'login', component: LoginComponent,
   },
   {
     path: 'admin',

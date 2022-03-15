@@ -5,7 +5,21 @@
 
   <div class="container default-container">
     <div class="auth-container">
-      <form [formGroup]="registrationForm">
+      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <p>
+          <mat-form-field class="auth-input" appearance="legacy">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" required>
+          </mat-form-field>
+        </p>
+
+        <p>
+          <mat-form-field class="auth-input" appearance="legacy">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" type="password" required>
+          </mat-form-field>
+        </p>
+
         <p>
           <mat-form-field class="auth-input" appearance="legacy">
             <mat-label>First Name</mat-label>
@@ -29,27 +43,17 @@
 
         <p>
           <mat-form-field appearance="legacy">
-            <mat-label>Select</mat-label>
-            <mat-select formControlName="sex">
-              <mat-option value="male">Male</mat-option>
-              <mat-option value="female">Female</mat-option>
+            <mat-label>Country</mat-label>
+            <mat-select formControlName="countryId">
+              <mat-option *ngFor="let country of countries" [value]="country.id">{{country.name}}</mat-option>
             </mat-select>
-          </mat-form-field>
-        </p>
-
-        <p>
-          <mat-form-field appearance="legacy">
-            <mat-label>Birth Date</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="birthDate" required>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </p>
 
         <p>
           <mat-form-field class="auth-input" appearance="legacy">
             <mat-label>Phone Number</mat-label>
-            <input matInput formControlName="phone" required>
+            <input matInput formControlName="phoneNumber" type="number" required>
           </mat-form-field>
         </p>
 
