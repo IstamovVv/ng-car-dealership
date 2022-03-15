@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from "@angular/common/http";
-import { catchError, Observable, throwError } from "rxjs";
+import { HttpClient, HttpParams, HttpResponse } from "@angular/common/http";
+import { Observable } from "rxjs";
 
-import { environment as env } from "../../../environments/environment";
-
-function getRelativeUrl(path: string, ...rest: string[]) {
-  const url = `${env.BASE_URL}/${path}`;
+function getRelativeUrl(url: string, path: string, ...rest: string[]) {
+  url += `/${path}`;
   rest.forEach(path => url.concat('/', path));
 
   return url;
@@ -18,8 +16,8 @@ export class HttpService {
 
   constructor(private http: HttpClient) { }
 
-  get<T>(path: string, page: number, size: number): Observable<T> {
-    const url = getRelativeUrl(path);
+  get<T>(url: string, path: string, page: number, size: number): Observable<T> {
+    url = getRelativeUrl(url, path);
     const params = new HttpParams({
       fromObject: { page, size }
     });
@@ -27,16 +25,16 @@ export class HttpService {
     return this.http.get<T>(url, { params });
   }
 
-  post<T>( path: string, data: T): Observable<HttpResponse<any>> {
-    const url = getRelativeUrl(path);
+  post<T>(url: string, path: string, data: T): Observable<HttpResponse<any>> {
+    url = getRelativeUrl(url, path);
 
     return this.http.post<any>(url, data, {
       observe: 'response'
     });
   }
 
-  delete(path: string, id: number): Observable<HttpResponse<any>> {
-    const url = getRelativeUrl(path, id.toString());
+  delete(url: string, path: string, id: number): Observable<HttpResponse<any>> {
+    url = getRelativeUrl(url, path, id.toString());
 
     return this.http.delete<any>(url, {
       observe: 'response',

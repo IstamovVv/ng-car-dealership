@@ -3,6 +3,8 @@ import { HttpService } from "./utils/http.service";
 import { Observable } from "rxjs";
 import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 
+import { environment as env } from "../../environments/environment";
+
 export interface IModelsActionObserver {
   onSuccess?: Function,
   onFailure?: Function,
@@ -13,6 +15,7 @@ export interface IModelsActionObserver {
 })
 export abstract class ModelsService<T, TData> {
   abstract readonly path: string;
+  readonly url: string = env.BASE_URL;
 
   protected constructor(private httpService: HttpService) {}
 
@@ -36,14 +39,14 @@ export abstract class ModelsService<T, TData> {
   }
 
   _makeGetRequest(page: number, size: number): Observable<T[]> {
-    return this.httpService.get<T[]>(this.path, page, size);
+    return this.httpService.get<T[]>(this.url, this.path, page, size);
   }
 
   _makePostRequest(data: TData): Observable<HttpResponse<null>> {
-    return this.httpService.post<TData>(this.path, data);
+    return this.httpService.post<TData>(this.url, this.path, data);
   }
 
   _makeDeleteRequest(id: number): Observable<HttpResponse<null>> {
-    return this.httpService.delete(this.path, id);
+    return this.httpService.delete(this.url, this.path, id);
   }
 }

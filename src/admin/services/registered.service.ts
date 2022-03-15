@@ -13,6 +13,8 @@ import { SalesService } from "../models/sales/services/sales.service";
 import { Supplier } from "../models/suppliers/models/supplier";
 import { Client } from "../models/clients/models/client";
 import { CarsService } from "../models/cars/services/cars.service";
+import {User} from "../../app/auth/models/user";
+import {UsersService} from "../models/users/services/users.service";
 
 interface IRegisteredParams<T, TData> {
   name              : string;
@@ -46,6 +48,13 @@ export class RegisteredService {
 
   constructor() {
     this.registered = {
+      users: new Registered<User>({
+        name              : 'Users',
+        path              : 'users',
+        service           : ServiceLocator.injector.get(UsersService),
+        fields            : ['username', 'firstName', 'lastName', 'patronymic', 'countryId', 'role', 'phoneNumber'],
+        calculatedFields  : ['id'],
+      }),
       clients: new Registered<Client>({
         name              : 'Clients',
         path              : 'clients',
